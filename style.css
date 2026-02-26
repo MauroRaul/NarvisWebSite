@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+:root {
+    --neu-base: #2D3748;
+    --neu-base-dark: #1A202C;
+    --neu-text: #F7FAFC;
+    --neu-text-light: #A0AEC0;
+    --neu-accent: #8B5CF6;
+    --neu-accent-hover: #7C3AED;
+    --neu-danger: #EF4444;
+    --neu-success: #10B981;
+    --neu-warning: #FBBF24;
+}
+
+body {
+    background-color: var(--neu-base);
+    color: var(--neu-text);
+    font-family: 'Nunito', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.font-courier {
+    font-family: 'Courier Prime', monospace;
+}
+
+/* Utilities Neumorfiche Dark Mode */
+/* Nel tema scuro, la luce bianca è quasi invisibile mente l'ombra scura è nera per dare l'effetto rilievo */
+.shadow-neu-out {
+    box-shadow: 9px 9px 16px rgba(0, 0, 0, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.05);
+}
+
+.shadow-neu-out-sm {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.05);
+}
+
+.shadow-neu-in {
+    box-shadow: inset 6px 6px 10px 0 rgba(0, 0, 0, 0.6), inset -6px -6px 10px 0 rgba(255, 255, 255, 0.05);
+}
+
+.shadow-neu-in-sm {
+    box-shadow: inset 3px 3px 6px 0 rgba(0, 0, 0, 0.6), inset -3px -3px 6px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* AI Typing Effect */
+.ai-typing {
+    border-bottom: 2px solid var(--neu-accent);
+    background-color: rgba(139, 92, 246, 0.1);
+    animation: pulse-border 1.5s infinite;
+}
+
+@keyframes pulse-border {
+    0% {
+        border-bottom-color: var(--neu-accent);
+        background-color: rgba(139, 92, 246, 0.1);
+    }
+    50% {
+        border-bottom-color: rgba(139, 92, 246, 0.3);
+        background-color: rgba(139, 92, 246, 0.05);
+    }
+    100% {
+        border-bottom-color: var(--neu-accent);
+        background-color: rgba(139, 92, 246, 0.1);
+    }
+}
+
+/* Scrollbar personalizzata invisibile */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--neu-base-dark);
+    border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--neu-text-light);
+}
