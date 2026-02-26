@@ -44,10 +44,10 @@
             <a href="#intelligence" class="hover:text-neu-accent transition-colors">Intelligenza</a>
             <a href="#studio" class="hover:text-neu-accent transition-colors">Studio Virtuale</a>
         </nav>
-        <a href="https://app.narvis.io/sign-in"
+        <button id="header-login-btn"
             class="px-6 py-2 rounded-xl font-bold text-neu-text transition-all shadow-neu-out hover:text-neu-accent active:shadow-neu-in text-xs hidden md:block border border-transparent">
             Accedi
-        </a>
+        </button>
     </header>
 
     <!-- Hero Section -->
@@ -83,10 +83,10 @@
             </div>
 
             <div class="flex flex-col sm:flex-row gap-6 mt-4 w-full justify-center px-4">
-                <a href="https://app.narvis.io/sign-in"
+                <button id="hero-cta-btn"
                     class="w-full sm:w-auto px-10 py-5 rounded-2xl font-extrabold text-neu-accent shadow-neu-out hover:shadow-neu-in active:shadow-neu-in transition-all text-sm uppercase tracking-wide text-center">
                     Richiedi Accesso Anticipato
-                </a>
+                </button>
             </div>
 
         </div>
@@ -284,6 +284,48 @@
                 }
             }, 3000);
         });
+    </script>
+
+    <!-- Clerk Authentication Integration -->
+    <script>
+        const publishableKey = "pk_test_Ym9zcy1kdWNrbGluZy0yMy5jbGVyay5hY2NvdW50cy5kZXYk";
+        const appUrl = "https://app.narvis.io/";
+
+        const startClerk = async () => {
+            const Clerk = window.Clerk;
+            try {
+                await Clerk.load();
+
+                const headerBtn = document.getElementById('header-login-btn');
+                const heroBtn = document.getElementById('hero-cta-btn');
+
+                if (Clerk.user) {
+                    // Se già loggato, i pulsanti portano in app
+                    if (headerBtn) {
+                        headerBtn.innerText = "Vai all'App";
+                        headerBtn.onclick = () => window.location.href = appUrl;
+                    }
+                    if (heroBtn) {
+                        heroBtn.innerText = "Torna al tuo spazio";
+                        heroBtn.onclick = () => window.location.href = appUrl;
+                    }
+                } else {
+                    // Se ospite, apre il modal di sign in/up in overlay
+                    if (headerBtn) headerBtn.onclick = () => Clerk.openSignIn({ redirectUrl: appUrl });
+                    if (heroBtn) heroBtn.onclick = () => Clerk.openSignUp({ redirectUrl: appUrl });
+                }
+            } catch (err) {
+                console.error('Errore inizializzazione Clerk:', err);
+            }
+        };
+
+        const script = document.createElement('script');
+        script.setAttribute('data-clerk-publishable-key', publishableKey);
+        script.async = true;
+        script.src = "https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js";
+        script.crossOrigin = "anonymous";
+        script.addEventListener('load', startClerk);
+        document.body.appendChild(script);
     </script>
 </body>
 
