@@ -1196,7 +1196,9 @@
             const signupPrompt = document.getElementById("wb-signup-prompt");
 
             // API e Stato
-            const GEMINI_API_KEY = "AIzaSyDU3ceASmYaTCD-9-F0W5tsvgJ28i03YIs";
+            // [SECURITY FIX] La chiave API è stata rimossa dal frontend. NON METTERLE in chiaro qui, il repo è pubblico!
+            // Da ora in avanti utilizzeremo una Serverless Function di Vercel per mascherarla come variabile d'ambiente.
+            const GEMINI_API_KEY = "DA_CONFIGURARE_SU_BACKEND";
             let currentBase64Image = null;
             let currentMimeType = null;
 
