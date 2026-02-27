@@ -54,7 +54,10 @@ export default async function handler(req, res) {
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateContent?key=${apiKey}`,
             {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Referer': 'https://narvis.it/'
+                },
                 body: JSON.stringify(geminiPayload)
             }
         );
