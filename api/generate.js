@@ -1,66 +1,92 @@
-import { GoogleGenAI } from '@google/genai';
-
-// Inizializza l'SDK con la chiave presa dalle Environment Variables di Vercel
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Vercel Serverless Function - Gemini API Proxy
+// Usa fetch nativo di Node.js 18+, zero dipendenze npm!
 
 export const config = {
     api: {
         bodyParser: {
-            sizeLimit: '10mb', // Permette l'upload di immagini sketch fino a 10MB
+            sizeLimit: '10mb',
         },
     },
 };
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method Not Allowed. Usa POST.' });
+        return res.status(405).json({ error: 'Method Not Allowed' });
+    }
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+        return res.status(500).json({ error: 'GEMINI_API_KEY non configurata su Vercel.' });
     }
 
     try {
         const { base64Image, mimeType, prompt } = req.body;
 
         if (!base64Image || !prompt) {
-            return res.status(400).json({ error: 'Mancano parametri fondamentali: base64Image o prompt.' });
+            return res.status(400).json({ error: 'Parametri mancanti: base64Image o prompt.' });
         }
 
-        // Dividiamo l'intestazione data:image/png;base64, dalla codifica vera e propria
-        const actualBase64Data = base64Image.split(',')[1];
+        // Rimuovi eventuale intestazione "data:image/...;base64," se presente
+        const cleanBase64 = base64Image.includes(',') ? base64Image.split(',')[1] : base64Image;
 
-        // Costruzione del payload per il modello Google Gemini 2.5 Flash
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+        const styledPrompt = `Trasforma questo sketch in un capolavoro digital art ultra dettagliato. Stile: ${prompt}. Mantieni la composizione originale ma renderizzala in modo cinematico, con luci drammatiche e colori ricchi. Ultra HD, altissima qualità.`;
+
+        const geminiPayload = {
             contents: [
-                prompt,
                 {
-                    inlineData: {
-                        data: actualBase64Data,
-                        mimeType: mimeType || 'image/png'
-                    }
+                    parts: [
+                        { text: styledPrompt },
+                        {
+                            inline_data: {
+                                mime_type: mimeType || 'image/png',
+                                data: cleanBase64
+                            }
+                        }
+                    ]
                 }
             ],
-            // Forziamo l'output visivo come richiesto
-            config: {
+            generationConfig: {
                 responseModalities: ["IMAGE"]
             }
-        });
+        };
 
-        // Estrazione dell'immagine Base64 dalla risposta di Gemini
-        const generatedImageData = response?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-        const generatedMimeType = response?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.mimeType;
+        const geminiRes = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateContent?key=${apiKey}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(geminiPayload)
+            }
+        );
 
-        if (!generatedImageData) {
-            throw new Error("L'API non ha restituito dati immagine validi. Riprova.");
+        const geminiData = await geminiRes.json();
+
+        if (!geminiRes.ok) {
+            throw new Error(geminiData.error?.message || 'Errore API Gemini');
+        }
+
+        // Cerca l'immagine nella risposta
+        let imageData = null;
+        let imageMime = 'image/jpeg';
+
+        for (const part of geminiData?.candidates?.[0]?.content?.parts || []) {
+            if (part.inline_data) {
+                imageData = part.inline_data.data;
+                imageMime = part.inline_data.mime_type;
+                break;
+            }
+        }
+
+        if (!imageData) {
+            throw new Error('Nessuna immagine generata dalla API. Modifica il prompt e riprova.');
         }
 
         res.status(200).json({
-            image: `data:${generatedMimeType || 'image/jpeg'};base64,${generatedImageData}`
+            image: `data:${imageMime};base64,${imageData}`
         });
 
     } catch (error) {
-        console.error("Errore Gemini API su Vercel Serverless:", error);
-        res.status(500).json({
-            error: 'Errore durante la generazione immagine.',
-            details: error.message
-        });
+        console.error('Errore Gemini:', error);
+        res.status(500).json({ error: error.message });
     }
 }
