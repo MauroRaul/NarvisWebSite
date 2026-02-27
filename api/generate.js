@@ -46,7 +46,7 @@ export default async function handler(req, res) {
                 }
             ],
             generationConfig: {
-                responseModalities: ["image", "text"]
+                responseModalities: ["IMAGE", "TEXT"]
             }
         };
 
@@ -73,9 +73,10 @@ export default async function handler(req, res) {
         let imageMime = 'image/jpeg';
 
         for (const part of geminiData?.candidates?.[0]?.content?.parts || []) {
-            if (part.inline_data) {
-                imageData = part.inline_data.data;
-                imageMime = part.inline_data.mime_type;
+            if (part.inlineData || part.inline_data) {
+                const dataObj = part.inlineData || part.inline_data;
+                imageData = dataObj.data;
+                imageMime = dataObj.mimeType || dataObj.mime_type || 'image/jpeg';
                 break;
             }
         }
