@@ -1343,69 +1343,68 @@
                 loader.classList.remove("hidden");
                 loader.classList.add("flex");
 
-                // Usa l'SDK ufficiale Google GenAI caricato via ESM (no CORS, uguale a come funziona in Narvis)
+                // Versione Sicura Vercel Serverless
                 try {
-                    const { GoogleGenAI } = await import("https://esm.run/@google/genai");
-                    const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-
-                    const response = await ai.models.generateContent({
-                        model: "gemini-2.5-flash-image",
-                        contents: {
-                            parts: [
-                                { inlineData: { mimeType: currentMimeType, data: currentBase64Image } },
-                                { text: `Trasforma questo sketch in un capolavoro digital art ultra dettagliato. Stile: ${prompt}. Mantieni la composizione e la struttura originale dello sketch ma renderizzala in modo cinematico, con luci drammatiche e colori ricchi. Ultra HD, altissima qualità.` }
-                            ]
+                    const response = await fetch('/api/generate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
                         },
-                        config: { responseModalities: ["IMAGE"] }
+                        body: JSON.stringify({
+                            prompt: prompt,
+                            base64Image: currentBase64Image,
+                            mimeType: currentMimeType
+                        })
                     });
 
-                    let imageDataUrl = null;
-                    if (response.candidates?.[0]?.content?.parts) {
-                        for (const part of response.candidates[0].content.parts) {
-                            if (part.inlineData) {
-                                imageDataUrl = `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
-                                break;
-                            }
-                        }
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || data.details || "Errore Server remoto.");
                     }
 
-                    if (!imageDataUrl) throw new Error("Nessuna immagine generata dalla API.");
+                    if (!data.image) {
+                        throw new Error("Nessuna immagine generata. L'API potrebbe aver bloccato la richiesta.");
+                    }
 
                     afterImg.style.filter = "none";
-                    afterImg.src = imageDataUrl;
+                    afterImg.src = data.image;
 
-                    // Aggiorna counter
-                    usesLeft -= 1;
-                    localStorage.setItem(STORAGE_KEY, usesLeft);
-                    updateUIState();
+                    // Aspetta il load estetico dell'immagine prima di animare lo split
+                    afterImg.onload = () => {
+                        // Aggiorna counter
+                        usesLeft -= 1;
+                        localStorage.setItem(STORAGE_KEY, usesLeft);
+                        updateUIState();
 
-                    // Nascondi loader e anima splitter
-                    loader.classList.add("hidden");
-                    loader.classList.remove("flex");
+                        // Nascondi loader e anima splitter
+                        loader.classList.add("hidden");
+                        loader.classList.remove("flex");
 
-                    sliderHandle.style.transition = "left 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-                    afterWrapper.style.transition = "width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-                    sliderHandle.offsetHeight;
-                    sliderHandle.style.left = "50%";
-                    afterWrapper.style.width = "50%";
+                        sliderHandle.style.transition = "left 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+                        afterWrapper.style.transition = "width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+                        sliderHandle.offsetHeight;
+                        sliderHandle.style.left = "50%";
+                        afterWrapper.style.width = "50%";
 
-                    setTimeout(() => {
-                        sliderHandle.style.transition = "none";
-                        afterWrapper.style.transition = "none";
-                    }, 800);
+                        setTimeout(() => {
+                            sliderHandle.style.transition = "none";
+                            afterWrapper.style.transition = "none";
+                        }, 800);
 
-                    if (usesLeft > 0) {
-                        generateBtn.disabled = false;
-                        generateBtn.classList.remove("cursor-not-allowed", "opacity-50");
-                    }
+                        if (usesLeft > 0) {
+                            generateBtn.disabled = false;
+                            generateBtn.classList.remove("cursor-not-allowed", "opacity-50");
+                        }
+                    };
 
                 } catch (err) {
-                    console.error("Generazione immagine fallita:", err);
+                    console.error("Generazione immagine fallita (Vercel):", err);
                     loader.classList.add("hidden");
                     loader.classList.remove("flex");
                     generateBtn.disabled = false;
                     generateBtn.classList.remove("cursor-not-allowed", "opacity-50");
-                    alert("Errore generazione immagine: " + err.message + "\n\nAssicurati che la API key sia abilitata per 'Generative Language API' su Google Cloud Console.");
+                    alert("Errore generazione immagine: " + err.message);
                 }
             });
         });
