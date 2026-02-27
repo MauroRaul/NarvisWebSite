@@ -558,13 +558,18 @@
                                     alt="Render AI" />
                             </div>
 
-                            <!-- Slider Handle (Rame/Ottone) -->
+                            <!-- Slider Handle (Hit-box allargata per Mobile) -->
                             <div id="wb-slider-handle"
-                                class="absolute top-0 bottom-0 w-1 bg-amber-500/80 cursor-ew-resize z-30 flex items-center justify-center shadow-[0_0_10px_rgba(245,158,11,0.5)]"
+                                class="absolute top-0 bottom-0 w-12 cursor-ew-resize z-30 flex items-center justify-center transform -translate-x-1/2 touch-none"
                                 style="left: 50%">
+                                <!-- Linea visibile -->
                                 <div
-                                    class="w-6 h-6 rounded-full bg-amber-500 text-black shadow-lg flex items-center justify-center pointer-events-none transform -translate-x-1/2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20"
+                                    class="absolute inset-y-0 w-1 bg-amber-500/80 shadow-[0_0_10px_rgba(245,158,11,0.5)] pointer-events-none">
+                                </div>
+                                <!-- Pallino visibile -->
+                                <div
+                                    class="w-8 h-8 rounded-full bg-amber-500 text-black shadow-lg flex items-center justify-center pointer-events-none z-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
                                         fill="currentColor">
                                         <path fill-rule="evenodd"
                                             d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.414-1.414H10a1 1 0 010-2h4.586l-1.414-1.414zM10 4a1 1 0 00-1 1v4H5.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L5.414 11H9v4H5.414l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L5.414 19H10a1 1 0 001-1V5a1 1 0 00-1-1z"
