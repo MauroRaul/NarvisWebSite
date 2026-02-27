@@ -226,27 +226,150 @@
             <h2 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">Geometria della Storia.</h2>
             <p class="text-lg text-neu-text-light font-semibold">Il tuo intreccio non è lineare. Perché dovrebbe esserlo
                 il tuo strumento di scrittura?</p>
-            <p class="text-neu-text leading-relaxed">
+            <p class="text-neu-text leading-relaxed relative">
                 Nodi, archi, cause ed effetti. Muovi un tassello e l'universo narrativo si riallinea automaticamente.
                 Una visione spaziale della trama affiancata al testo, per padroneggiare opere complesse senza mai
                 perdere il filo.
             </p>
+
+            <!-- Wow Text a comparsa -->
+            <div id="wow-description-box"
+                class="overflow-hidden transition-all duration-[1500ms] ease-in-out max-h-0 opacity-0 mt-4 rounded-xl border border-neu-accent/30 bg-neu-accent/5 p-0">
+                <div class="p-6">
+                    <p class="text-neu-text leading-relaxed text-sm md:text-base italic">
+                        Con lo Storyline non organizzi semplici capitoli: costruisci <strong
+                            class="text-neu-accent">nodi narrativi</strong> collegati da relazioni logiche e
+                        causali.<br>
+                        È qui che nasce la vera <strong class="text-neu-accent">nidificazione</strong>: un capitolo si
+                        espande in episodi, un episodio si scompone nei suoi dettagli essenziali.<br><br>
+                        Il risultato è una struttura <strong class="text-neu-accent">profonda e dinamica</strong>,
+                        capace di rendere visibile l’architettura dell’intreccio e di mantenerla coerente nel
+                        tempo.<br><br>
+                        NARVIS non è solo un programma di scrittura<br>
+                        È un ambiente che comprende la tua storia, ne preserva la coerenza e la fa evolvere insieme a
+                        te.
+                    </p>
+                </div>
+            </div>
         </div>
 
         <div id="storyline-workspace"
             class="md:w-1/2 w-full relative h-[400px] flex items-center justify-center overflow-visible select-none">
 
             <!-- SVG Canvas for dynamic drawing -->
-            <svg id="storyline-svg" class="absolute inset-0 w-full h-full pointer-events-none z-0"
+            <svg id="storyline-svg"
+                class="absolute inset-0 w-full h-full pointer-events-none z-0 transition-opacity duration-[2000ms]"
                 style="overflow: visible;">
                 <!-- Initial static line will be drawn here by JS on load -->
             </svg>
 
+            <!-- Container Astratto Passato / Futuro (Invisibile di base) - GRIGLIA A 9 NODI -->
+            <div id="abstract-graph-overlay"
+                class="absolute inset-0 w-full h-full z-40 flex items-center justify-between px-10 pointer-events-none opacity-0 transition-all duration-[2000ms] scale-75">
+
+                <!-- Zona Passato (4 Nodi in struttura ad albero sx) -->
+                <div class="flex flex-col items-end gap-2 relative w-1/3 h-full justify-center">
+                    <span
+                        class="absolute top-10 left-0 text-neu-text-light font-bold tracking-widest uppercase text-sm opacity-50">Passato</span>
+
+                    <!-- Ramo Superiore -->
+                    <div class="flex items-center gap-2 translate-x-4">
+                        <div
+                            class="w-12 h-6 rounded-full border border-white/5 bg-neu-base-dark shadow-neu-in-sm flex items-center justify-center opacity-70">
+                            <div class="w-1.5 h-1.5 rounded-full bg-cyan-500/30"></div>
+                        </div>
+                        <div class="w-6 h-px bg-cyan-500/20"></div>
+                        <div
+                            class="w-16 h-8 rounded-full border border-white/10 bg-neu-base-dark shadow-neu-in-sm flex items-center justify-center">
+                            <div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+                        </div>
+                    </div>
+
+                    <!-- Linee di connessione centrali -->
+                    <div class="absolute right-[5.5rem] top-1/2 -translate-y-1/2 w-px h-16 bg-cyan-500/20"></div>
+
+                    <!-- Nodo Centrale asse principale -->
+                    <div class="flex items-center gap-2 mt-2">
+                        <div
+                            class="w-10 h-6 rounded-full border border-white/5 bg-neu-base-dark shadow-neu-in-sm flex items-center justify-center opacity-50">
+                            <div class="w-1.5 h-1.5 rounded-full border border-cyan-500/30"></div>
+                        </div>
+                        <div class="w-10 h-px bg-cyan-500/20"></div>
+                        <div
+                            class="w-20 h-8 rounded-full border border-white/10 bg-neu-base shadow-neu-out flex items-center justify-end px-3">
+                            <div class="w-2 h-2 rounded-full bg-cyan-500"></div>
+                        </div>
+                    </div>
+
+                    <!-- Ramo Inferiore -->
+                    <div class="flex items-center gap-2 mt-2 translate-x-8 opacity-80">
+                        <div class="w-8 h-px bg-cyan-500/20"></div>
+                        <div
+                            class="w-12 h-6 rounded-full border border-white/10 bg-neu-base-dark shadow-neu-in-sm flex items-center justify-center">
+                            <div class="w-1.5 h-1.5 rounded-full border border-purple-500/40"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connessione Centrale -->
+                <div
+                    class="flex-1 max-w-[80px] h-px bg-gradient-to-r from-cyan-500 via-white/20 to-purple-500 mx-4 opacity-50">
+                </div>
+
+                <!-- Zona Futuro (5 Nodi in struttura ad albero dx) -->
+                <div class="flex flex-col items-start gap-3 relative w-1/3 h-full justify-center">
+                    <span
+                        class="absolute top-10 right-0 text-neu-text-light font-bold tracking-widest uppercase text-sm opacity-50">Futuro</span>
+
+                    <!-- Ramo Superiore -->
+                    <div class="flex items-center gap-2 translate-x-4">
+                        <div
+                            class="w-24 h-8 rounded-full border border-white/10 bg-neu-base-dark flex items-center px-4 justify-between shadow-neu-in-sm">
+                            <div class="w-2 h-2 rounded-full bg-purple-500/50"></div>
+                            <div class="h-1 w-8 bg-white/5 rounded-full"></div>
+                        </div>
+                        <div class="w-4 h-px bg-purple-500/20"></div>
+                        <div
+                            class="w-10 h-6 rounded-full border border-white/5 bg-neu-base-dark flex items-center justify-center shadow-neu-in-sm opacity-60">
+                            <div class="w-1.5 h-1.5 rounded-full border border-purple-500/30"></div>
+                        </div>
+                    </div>
+
+                    <!-- Linee di diramazione centrali dx -->
+                    <div class="absolute left-8 top-1/2 -translate-y-1/2 w-px h-24 bg-purple-500/20 -z-10"></div>
+
+                    <!-- Nodo Centrale asse principale -->
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="w-16 h-8 rounded-full border border-neu-accent/30 flex items-center justify-center shadow-neu-out bg-neu-base relative">
+                            <div
+                                class="w-2.5 h-2.5 rounded-full bg-neu-accent animate-pulse shadow-[0_0_10px_rgba(6,182,212,0.8)]">
+                            </div>
+                        </div>
+                        <div class="w-12 h-px bg-purple-500/20"></div>
+                        <div
+                            class="w-14 h-6 rounded-full border border-white/5 bg-neu-base-dark flex items-center justify-center shadow-neu-in-sm opacity-60">
+                            <div class="w-1 h-1 rounded-full bg-purple-500/30"></div>
+                        </div>
+                    </div>
+
+                    <!-- Ramo Inferiore -->
+                    <div class="flex items-center gap-2 -translate-x-2">
+                        <div class="w-6 h-px bg-purple-500/20"></div>
+                        <div
+                            class="w-16 h-8 rounded-full border border-white/10 bg-neu-base-dark flex items-center justify-center shadow-neu-in-sm">
+                            <div class="w-2 h-2 rounded-full bg-green-500/40"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Wrapper Animato: Card Elemento Sceneggiatura -->
-            <div class="absolute left-0 z-10 w-2/3 node-element" id="source-chapter-node">
+            <div class="absolute left-0 z-10 w-2/3 node-element transition-all duration-[2000ms] ease-in-out"
+                id="source-chapter-node">
                 <!-- VERO COMPONENTE STORYLINE PANEL: STORY NODE (CHAPTER) -->
                 <div
-                    class="rounded-xl flex flex-col group shadow-neu-in border border-white/20 ring-2 ring-neu-accent bg-[rgba(224,229,236,0.1)] relative w-full h-40">
+                    class="rounded-xl flex flex-col group shadow-neu-in border border-white/20 ring-2 ring-neu-accent bg-[rgba(224,229,236,0.1)] relative w-full h-40 transition-all duration-[2000ms]">
                     <div
                         class="absolute top-0 left-0 w-full h-5 z-0 rounded-t-xl overflow-hidden pointer-events-none border-b border-white/20 shadow-sm bg-neu-text">
                         <div class="absolute inset-0 w-full h-full"
@@ -264,16 +387,24 @@
                     </div>
                     <div
                         class="absolute top-0 left-0 bg-neu-base shadow-neu-out rounded-br-2xl border-r border-b border-white/20 z-20 px-4 py-1.5 flex items-center space-x-2 mt-5">
-                        <h4 class="font-extrabold text-neu-text text-xs uppercase truncate">SCENA 01 - Il Ritorno</h4>
+                        <h4 class="font-extrabold text-neu-text text-xs uppercase truncate">Capitolo 12 - Il Nautilus
+                        </h4>
                     </div>
                     <!-- Nodi di Connessione -->
-                    <div class="connection-port absolute w-4 h-4 bg-green-500 rounded-full z-30 cursor-crosshair hover:scale-125 hover:opacity-100 transition-transform"
+                    <div class="connection-port absolute w-4 h-4 bg-green-500 rounded-full z-30 hover:scale-125 hover:opacity-100 transition-transform"
                         data-port-color="#22c55e" style="left: -6px; top: 40%"></div>
-                    <div class="connection-port connection-port-right absolute w-4 h-4 bg-cyan-500 rounded-full z-30 cursor-crosshair hover:scale-125 hover:opacity-100 transition-transform shadow-[0_0_10px_rgba(6,182,212,0.8)]"
-                        data-port-color="#06b6d4" style="right: -6px; top: 40%"></div>
-                    <div class="connection-port absolute w-4 h-4 bg-purple-500 rounded-full z-30 cursor-crosshair hover:scale-125 hover:opacity-100 transition-transform"
+                    <!-- Porta di connessione interattiva con visual cue (pulse) -->
+                    <div class="connection-port animate-pulse connection-port-right absolute w-4 h-4 bg-cyan-500 rounded-full z-30 cursor-crosshair hover:scale-125 hover:opacity-100 transition-transform shadow-[0_0_10px_rgba(6,182,212,0.8)]"
+                        data-port-color="#06b6d4" style="right: -6px; top: 40%" title="Trascina per connettere">
+                        <!-- Tooltip Visuale Pulsante -->
+                        <div
+                            class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-neu-text text-neu-base text-[10px] font-bold px-2 py-1 rounded shadow-lg pointer-events-none opacity-80 animate-bounce">
+                            Trascina
+                        </div>
+                    </div>
+                    <div class="connection-port absolute w-4 h-4 bg-purple-500 rounded-full z-30 hover:scale-125 hover:opacity-100 transition-transform"
                         data-port-color="#a855f7" style="left: -6px; top: 70%"></div>
-                    <div class="connection-port absolute w-4 h-4 bg-purple-500 rounded-full z-30 cursor-crosshair hover:scale-125 hover:opacity-100 transition-transform"
+                    <div class="connection-port absolute w-4 h-4 bg-purple-500 rounded-full z-30 hover:scale-125 hover:opacity-100 transition-transform"
                         data-port-color="#a855f7" style="right: -6px; top: 70%"></div>
 
                     <div
@@ -646,18 +777,12 @@
             const svgLayer = document.getElementById('storyline-svg');
 
             let isDragging = false;
-            let isDraggingNode = false;
 
             let currentPath = null;
             let startPort = null;
             let startPortColor = '#06b6d4';
             let startX = 0;
             let startY = 0;
-
-            // For node drag
-            let draggedNode = null;
-            let nodeOffsetX = 0;
-            let nodeOffsetY = 0;
 
             let hasCreatedNode = false; // Flag per bloccare creazione multipla
 
@@ -702,6 +827,9 @@
                     startPort = port;
                     startPortColor = port.getAttribute('data-port-color');
 
+                    // Rimuovi eventuale animazione "cue" se presente
+                    port.classList.remove('animate-pulse');
+
                     const portRect = port.getBoundingClientRect();
                     const workspaceRect = workspace.getBoundingClientRect();
 
@@ -714,30 +842,10 @@
                     document.body.style.cursor = 'crosshair';
                     return;
                 }
-
-                // 2. Controllo click trascinamento nodo (se c'è)
-                const node = e.target.closest('.draggable-node');
-                const isEditable = e.target.hasAttribute('contenteditable');
-
-                if (node && !isEditable) {
-                    e.preventDefault();
-                    isDraggingNode = true;
-                    draggedNode = node;
-
-                    const workspaceRect = workspace.getBoundingClientRect();
-                    const mouseX = coords.clientX - workspaceRect.left;
-                    const mouseY = coords.clientY - workspaceRect.top;
-
-                    nodeOffsetX = mouseX - node.offsetLeft;
-                    nodeOffsetY = mouseY - node.offsetTop;
-
-                    workspace.appendChild(node);
-                    document.body.style.cursor = 'grabbing';
-                }
             };
 
             const handlePointerMove = (e) => {
-                if (!isDragging && !isDraggingNode) return;
+                if (!isDragging) return;
 
                 const coords = getEventCoords(e);
                 const workspaceRect = workspace.getBoundingClientRect();
@@ -748,43 +856,6 @@
                     e.preventDefault();
                     drawPath(startX, startY, mouseX, mouseY, startPortColor, currentPath);
                 }
-                else if (isDraggingNode && draggedNode) {
-                    e.preventDefault();
-
-                    // Applichiamo i limiti (bounds) all'area workspace
-                    let newLeft = mouseX - nodeOffsetX;
-                    let newTop = mouseY - nodeOffsetY;
-
-                    const nodeRect = draggedNode.getBoundingClientRect();
-
-                    // Limite sinistro: Non far sovrapporre con il primo blocco (Scena 01).
-                    // Stimiamo il blocco a circa 200px (il margin lo tiene alla giusta distanza)
-                    const minX = 220;
-                    const maxX = workspaceRect.width - nodeRect.width;
-                    const minY = 0;
-                    const maxY = workspaceRect.height - nodeRect.height;
-
-                    if (newLeft < minX) newLeft = minX;
-                    if (newLeft > maxX) newLeft = maxX;
-                    if (newTop < minY) newTop = minY;
-                    if (newTop > maxY) newTop = maxY;
-
-                    draggedNode.style.left = `${newLeft}px`;
-                    draggedNode.style.top = `${newTop}px`;
-
-                    // Aggiorniamo linea se connesso
-                    if (draggedNode.connectedPath) {
-                        const targetX = newLeft;
-                        const targetY = newTop + 40;
-                        drawPath(
-                            draggedNode.pathStartX,
-                            draggedNode.pathStartY,
-                            targetX, targetY,
-                            draggedNode.pathColor,
-                            draggedNode.connectedPath
-                        );
-                    }
-                }
             };
 
             const createNewNode = (x, y, color) => {
@@ -793,12 +864,14 @@
 
                 const uniqueId = 'node-' + Date.now();
 
-                // Manteniamo x all'interno dei limiti fin dalla creazione
+                // Manteniamo le coordinate nei limiti minimi per non sovrapporsi al blocco principale
                 let finalX = x - 20;
                 if (finalX < 230) finalX = 230;
 
+                let finalY = y - 40;
+
                 const nodeHtml = `
-                <div id="${uniqueId}" class="absolute z-40 draggable-node cursor-grab active:cursor-grabbing hover:ring-2 hover:ring-white/20 transition-[box-shadow_outline] duration-200 rounded-xl" style="left: ${finalX}px; top: ${y - 40}px; animation: bounce-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                <div id="${uniqueId}" class="absolute z-40 draggable-node cursor-grab active:cursor-grabbing hover:ring-2 hover:ring-white/20 transition-[box-shadow_outline] duration-200 rounded-xl" style="left: ${finalX}px; top: ${finalY}px; animation: bounce-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
                     <div class="rounded-xl flex flex-col group shadow-neu-in border border-white/20 ring-2 bg-[rgba(224,229,236,0.1)] relative w-64 p-4 gap-3 backdrop-blur-md" style="--tw-ring-color: ${color};">
                         
                         <div class="absolute top-0 left-0 w-full h-4 z-0 rounded-t-xl overflow-hidden pointer-events-none border-b border-white/20 shadow-sm bg-neu-text">
@@ -827,19 +900,43 @@
                             <h5 class="font-bold truncate text-xs text-neu-text-light pl-2 transition-colors w-full outline-none" contenteditable="true" spellcheck="false">Nautilus</h5>
                         </div>
 
+                        <!-- Zoom Lens Button (Appare dopo creazione) -->
+                        <button class="zoom-btn absolute -left-8 top-1/2 -translate-y-1/2 w-8 h-8 bg-neu-accent rounded-full shadow-neu-out flex items-center justify-center text-white hover:scale-110 hover:brightness-110 active:scale-95 transition-all outline-none animate-pulse z-50 group border border-white/20" title="Visualizza la Matrice Narrativa">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                        </button>
                     </div>
                 </div>
                 `;
 
                 workspace.insertAdjacentHTML('beforeend', nodeHtml);
                 const newNode = document.getElementById(uniqueId);
+                newNode.classList.add('created-node'); // Helper per CSS
 
                 if (currentPath) {
                     newNode.connectedPath = currentPath;
                     newNode.pathStartX = startX;
                     newNode.pathStartY = startY;
                     newNode.pathColor = color;
+
+                    // Forza il disegno della linea per collegarsi precisamente al punto bloccato (bounded) del nodo
+                    drawPath(startX, startY, finalX, finalY + 40, color, currentPath);
                 }
+
+                // Logica Zoom Out (Nidificazione)
+                const zoomBtn = newNode.querySelector('.zoom-btn');
+                zoomBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+
+                    // Attiva Zoom Out
+                    workspace.classList.add('zoomed-out');
+
+                    // Mostra il testo Copy nascosto
+                    const wowBox = document.getElementById('wow-description-box');
+                    if (wowBox) wowBox.classList.add('expanded');
+
+                    // Rimuovi pulsante
+                    zoomBtn.style.display = 'none';
+                });
 
                 // Fix newline behavior in contenteditable
                 const editables = newNode.querySelectorAll('[contenteditable]');
@@ -882,18 +979,39 @@
 
             // Event Listeners Misti (Mouse per Desktop, Touch per Mobile)
             workspace.addEventListener('mousedown', handlePointerDown, { passive: false });
-            workspace.addEventListener('mousemove', handlePointerMove, { passive: false });
+            window.addEventListener('mousemove', handlePointerMove, { passive: false });
             window.addEventListener('mouseup', handlePointerUp);
 
             workspace.addEventListener('touchstart', handlePointerDown, { passive: false });
-            workspace.addEventListener('touchmove', handlePointerMove, { passive: false });
+            window.addEventListener('touchmove', handlePointerMove, { passive: false });
             window.addEventListener('touchend', handlePointerUp);
             window.addEventListener('touchcancel', handlePointerUp);
         });
     </script>
-    });
-    </script>
     <style>
+        /* Zoom Out Mode Classes */
+        #storyline-workspace.zoomed-out .node-element,
+        #storyline-workspace.zoomed-out .created-node {
+            opacity: 0 !important;
+            transform: scale(0.3) !important;
+            pointer-events: none !important;
+            filter: blur(2px) grayscale(100%);
+        }
+
+        #storyline-workspace.zoomed-out #storyline-svg {
+            opacity: 0 !important;
+        }
+
+        #storyline-workspace.zoomed-out #abstract-graph-overlay {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+
+        #wow-description-box.expanded {
+            max-height: 800px !important;
+            opacity: 1 !important;
+        }
+
         @keyframes bounce-in {
             0% {
                 transform: scale(0.8);
