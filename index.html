@@ -61,21 +61,17 @@
     <!-- Hero Section -->
     <main class="w-full flex-grow flex flex-col items-center justify-center container mx-auto px-4 mt-12 mb-32">
         <div class="max-w-4xl w-full flex flex-col items-center text-center space-y-12">
-            <!-- Graphic Element: Simula la battitura a macchina incassata -->
-            <div
-                class="w-full max-w-2xl bg-neu-base shadow-neu-in rounded-3xl p-6 md:p-8 flex items-center justify-center relative overflow-hidden h-32 md:h-40">
-                <!-- Text that disappears -->
-                <div id="hero-typing-text"
-                    class="font-mono text-neu-text-light opacity-80 text-sm md:text-lg absolute transition-opacity duration-1000">
-                    INT. CAMERA DEL PROTAGONISTA - NOTTE
-                    <br /><br />
-                    La parola fine...<span class="animate-pulse">_</span>
+            <!-- Hero Image -->
+            <div class="w-full max-w-5xl relative group perspective-1000 mt-4 md:mt-8">
+                <!-- Outer Glow -->
+                <div
+                    class="absolute -inset-1 bg-gradient-to-r from-neu-accent to-purple-600 rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000">
                 </div>
-                <!-- UI Interface that fades in -->
-                <div id="hero-ui-element" class="opacity-0 transition-opacity duration-1000 absolute w-3/4 flex gap-4">
-                    <div class="flex-grow shadow-neu-in rounded-xl p-3 flex items-center">
-                        <div class="h-2 w-1/2 bg-neu-accent rounded-full opacity-50 ai-typing"></div>
-                    </div>
+                <!-- Image Container -->
+                <div
+                    class="relative bg-neu-base-dark rounded-3xl p-2 md:p-4 shadow-neu-out border border-white/10 ring-1 ring-white/5 transform transition-transform duration-700 hover:scale-[1.01]">
+                    <img src="HeroShot.png" alt="Narvis App Interface"
+                        class="w-full h-auto rounded-2xl shadow-inner border border-black/50" />
                 </div>
             </div>
 
@@ -769,25 +765,7 @@
         </div>
     </footer>
 
-    <script>
-        // Simple animation script per l'esordio della hero
-        document.addEventListener("DOMContentLoaded", () => {
-            setTimeout(() => {
-                const typingText = document.getElementById("hero-typing-text");
-                const uiElement = document.getElementById("hero-ui-element");
 
-                if (typingText && uiElement) {
-                    typingText.classList.remove("opacity-80");
-                    typingText.classList.add("opacity-0");
-
-                    setTimeout(() => {
-                        uiElement.classList.remove("opacity-0");
-                        uiElement.classList.add("opacity-100");
-                    }, 500);
-                }
-            }, 3000);
-        });
-    </script>
 
     <!-- Clerk Authentication Integration -->
     <script>
